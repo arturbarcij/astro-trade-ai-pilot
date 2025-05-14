@@ -106,7 +106,7 @@ const MarketTicker = () => {
         </button>
       </div>
       
-      <style jsx>{`
+      <style>{`
         @keyframes ticker {
           0% {
             transform: translateX(0);
