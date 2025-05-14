@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,26 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+        // Trading platform custom colors
+        space: {
+          DEFAULT: '#1a1f35',
+          light: '#2a3349',
+          dark: '#10121e',
+          accent: '#4361ee'
+        },
+        silver: {
+          DEFAULT: '#c1c8e4',
+          light: '#e8eaf6',
+          dark: '#8b96cc'
+        },
+        cosmic: {
+          DEFAULT: '#7661ee',
+          light: '#9c82ff',
+          dark: '#5142a6'
+        },
+        gain: '#22c55e',
+        loss: '#ef4444',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,13 +104,24 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-subtle': {
+					'0%, 100%': { opacity: 1 },
+					'50%': { opacity: 0.8 }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-subtle': 'pulse-subtle 3s ease-in-out infinite',
+				'float': 'float 3s ease-in-out infinite'
 			}
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
