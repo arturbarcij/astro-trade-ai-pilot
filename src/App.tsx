@@ -11,6 +11,7 @@ import Market from "./pages/Market";
 import Portfolio from "./pages/Portfolio";
 import Assistant from "./pages/Assistant";
 import Account from "./pages/Account";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/market" element={<Market />} />
+              <Route path="/analytics" element={<Analytics />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/account" element={<Account />} />

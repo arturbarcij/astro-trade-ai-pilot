@@ -1,11 +1,12 @@
 
-import { BarChart2, Home, MessageSquare, PieChart, Settings, User } from "lucide-react";
+import { BarChart2, Chart, Home, MessageSquare, PieChart, Settings, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { name: "Dashboard", icon: Home, path: "/" },
   { name: "Market", icon: BarChart2, path: "/market" },
+  { name: "Analytics", icon: Chart, path: "/analytics" },
   { name: "Portfolio", icon: PieChart, path: "/portfolio" },
   { name: "Assistant", icon: MessageSquare, path: "/assistant" },
   { name: "Account", icon: User, path: "/account" },
