@@ -2,62 +2,13 @@
 import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface NewsItem {
-  id: number;
-  title: string;
-  source: string;
-  time: string;
-  sentiment: "positive" | "negative" | "neutral";
-  summary?: string;
-}
+import { generateMarketNews, NewsItem } from "@/lib/marketDataUtils";
 
 const MarketNews = () => {
   const [expandedNews, setExpandedNews] = useState<number | null>(null);
 
-  // Mock news data - would be replaced with real news API data
-  const news: NewsItem[] = [
-    {
-      id: 1,
-      title: "Federal Reserve Signals Potential Rate Cut",
-      source: "Financial Times",
-      time: "2 hours ago",
-      sentiment: "positive",
-      summary: "The Federal Reserve has signaled it may begin cutting interest rates soon, citing improving inflation data and concerns about maintaining a strong labor market. Markets responded positively, with the S&P 500 closing up 1.2%.",
-    },
-    {
-      id: 2,
-      title: "Tech Giant Reports Disappointing Earnings",
-      source: "Wall Street Journal",
-      time: "5 hours ago",
-      sentiment: "negative",
-      summary: "A major technology company reported quarterly earnings below analyst expectations, citing supply chain constraints and weakening consumer demand. The company's shares fell 8% in after-hours trading.",
-    },
-    {
-      id: 3,
-      title: "Oil Prices Stabilize After Recent Volatility",
-      source: "Bloomberg",
-      time: "8 hours ago",
-      sentiment: "neutral",
-      summary: "Global oil prices have stabilized following a period of volatility, as concerns about Middle East supply disruptions were offset by reports of increasing U.S. production. Analysts expect prices to remain range-bound in the near term.",
-    },
-    {
-      id: 4,
-      title: "Renewable Energy Sector Sees Record Investment",
-      source: "Reuters",
-      time: "12 hours ago",
-      sentiment: "positive",
-      summary: "The renewable energy sector has attracted record levels of investment in the first quarter, with solar and wind projects leading the way. Several countries have announced ambitious new clean energy targets, boosting investor confidence in the sector.",
-    },
-    {
-      id: 5,
-      title: "Retail Sales Data Shows Unexpected Decline",
-      source: "CNBC",
-      time: "1 day ago",
-      sentiment: "negative",
-      summary: "Monthly retail sales figures came in below expectations, showing a 0.3% decline compared to the previous month. Economists point to rising inflation and interest rates as factors constraining consumer spending.",
-    },
-  ];
+  // Get our simulated German market news
+  const news: NewsItem[] = generateMarketNews();
 
   const toggleExpand = (id: number) => {
     setExpandedNews(expandedNews === id ? null : id);
@@ -77,7 +28,7 @@ const MarketNews = () => {
 
   return (
     <div className="glass-card p-4">
-      <h3 className="text-lg font-semibold mb-4">Market News & Analysis</h3>
+      <h3 className="text-lg font-semibold mb-4">German Market News</h3>
       <div className="space-y-3">
         {news.map((item) => (
           <div 
@@ -105,6 +56,18 @@ const MarketNews = () => {
               {expandedNews === item.id && item.summary && (
                 <div className="mt-3 text-silver border-t border-space-light pt-3 text-sm">
                   {item.summary}
+                  
+                  {/* Show related symbols if available */}
+                  {item.relatedSymbols && item.relatedSymbols.length > 0 && (
+                    <div className="mt-2">
+                      <span className="text-xs text-muted-foreground">Related: </span>
+                      {item.relatedSymbols.map((symbol, index) => (
+                        <span key={symbol} className="text-xs bg-space-light rounded-md px-1.5 py-0.5 ml-1">
+                          {symbol}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

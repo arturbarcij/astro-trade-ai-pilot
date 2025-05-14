@@ -1,52 +1,48 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StockChart from "@/components/StockChart";
 import MarketTicker from "@/components/MarketTicker";
 import MarketNews from "@/components/MarketNews";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface MarketIndex {
-  name: string;
-  value: number;
-  change: number;
-  changePercent: number;
-}
-
-interface MarketStock {
-  symbol: string;
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  volume: string;
-}
+import { 
+  getAllStocks, 
+  getMarketIndices, 
+  setSelectedStock,
+  getSelectedStock
+} from "@/services/marketDataService";
+import { StockData, MarketIndex } from "@/lib/marketDataUtils";
 
 const Market = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStock, setSelectedStock] = useState("AAPL");
+  const [selectedStock, setSelectedStockState] = useState(getSelectedStock());
+  const [stocks, setStocks] = useState<StockData[]>([]);
+  const [indices, setIndices] = useState<MarketIndex[]>([]);
 
-  // Mock market indexes data
-  const indices: MarketIndex[] = [
-    { name: "S&P 500", value: 5234.21, change: 23.45, changePercent: 0.45 },
-    { name: "NASDAQ", value: 16542.76, change: 124.32, changePercent: 0.76 },
-    { name: "Dow Jones", value: 39875.43, change: -56.78, changePercent: -0.14 },
-    { name: "Russell 2000", value: 2034.65, change: -12.32, changePercent: -0.60 },
-  ];
+  // Initialize with our German market data and set up update interval
+  useEffect(() => {
+    // Get initial data
+    updateMarketData();
+    
+    // Set up interval to refresh market data
+    const interval = setInterval(() => {
+      updateMarketData();
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Update all market data from our service
+  const updateMarketData = () => {
+    setStocks(getAllStocks());
+    setIndices(getMarketIndices());
+  };
 
-  // Mock stocks data
-  const stocks: MarketStock[] = [
-    { symbol: "AAPL", name: "Apple Inc.", price: 182.63, change: 1.25, changePercent: 0.69, volume: "52.3M" },
-    { symbol: "MSFT", name: "Microsoft Corp.", price: 412.65, change: -2.31, changePercent: -0.56, volume: "23.1M" },
-    { symbol: "GOOGL", name: "Alphabet Inc.", price: 172.48, change: 0.72, changePercent: 0.42, volume: "18.7M" },
-    { symbol: "AMZN", name: "Amazon.com Inc.", price: 184.29, change: -0.46, changePercent: -0.25, volume: "31.5M" },
-    { symbol: "TSLA", name: "Tesla Inc.", price: 173.80, change: 3.58, changePercent: 2.10, volume: "105.2M" },
-    { symbol: "NVDA", name: "NVIDIA Corp.", price: 867.32, change: 12.54, changePercent: 1.47, volume: "42.8M" },
-    { symbol: "META", name: "Meta Platforms Inc.", price: 467.79, change: -1.03, changePercent: -0.22, volume: "15.3M" },
-    { symbol: "NFLX", name: "Netflix Inc.", price: 605.78, change: 10.32, changePercent: 1.73, volume: "8.2M" },
-    { symbol: "JPM", name: "JPMorgan Chase & Co.", price: 198.23, change: -0.83, changePercent: -0.42, volume: "9.1M" },
-    { symbol: "V", name: "Visa Inc.", price: 276.54, change: 1.35, changePercent: 0.49, volume: "6.7M" },
-  ];
+  // Handle stock selection
+  const handleSelectStock = (symbol: string) => {
+    setSelectedStockState(symbol);
+    setSelectedStock(symbol);
+  };
 
   // Filter stocks based on search query
   const filteredStocks = searchQuery
@@ -62,13 +58,13 @@ const Market = () => {
       <MarketTicker />
       
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Market Overview</h1>
+        <h1 className="text-2xl font-bold mb-6">German Market Overview</h1>
         
         <div className="grid grid-cols-12 gap-6">
           {/* Market Indices */}
           <div className="col-span-12">
             <div className="glass-card p-4">
-              <h3 className="text-lg font-semibold mb-4">Major Indices</h3>
+              <h3 className="text-lg font-semibold mb-4">German Market Indices</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {indices.map((index) => (
                   <div key={index.name} className="bg-space p-4 rounded-lg">
@@ -105,7 +101,7 @@ const Market = () => {
                   <input
                     type="text"
                     className="w-full bg-space p-2 pl-8 rounded-md text-silver focus:outline-none focus:ring-1 focus:ring-space-accent"
-                    placeholder="Search stocks..."
+                    placeholder="Search German stocks..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -130,7 +126,7 @@ const Market = () => {
                           "hover:bg-space/40 cursor-pointer",
                           selectedStock === stock.symbol ? "bg-space/40" : ""
                         )}
-                        onClick={() => setSelectedStock(stock.symbol)}
+                        onClick={() => handleSelectStock(stock.symbol)}
                       >
                         <td>
                           <div>

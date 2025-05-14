@@ -10,11 +10,8 @@ import {
   YAxis 
 } from "recharts";
 import { Calendar, Clock, RefreshCw } from "lucide-react";
-
-interface ChartData {
-  time: string;
-  price: number;
-}
+import { getStock, getStockChartData } from "@/services/marketDataService";
+import { MarketDataPoint } from "@/lib/marketDataUtils";
 
 interface StockChartProps {
   symbol: string;
@@ -22,96 +19,24 @@ interface StockChartProps {
 }
 
 const StockChart = ({ symbol, timeframe = "1D" }: StockChartProps) => {
-  const [data, setData] = useState<ChartData[]>([]);
+  const [data, setData] = useState<MarketDataPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<"1D" | "1W" | "1M" | "3M" | "1Y" | "ALL">(timeframe);
 
-  // Generate mock chart data based on timeframe
+  // Get chart data for the stock
   useEffect(() => {
     setLoading(true);
     
-    const generateData = () => {
-      const result: ChartData[] = [];
-      const now = new Date();
-      let startPrice = 150 + Math.random() * 50;
-      const volatility = 2;
-      
-      let points = 0;
-      let timeFormat: (date: Date) => string;
-      
-      switch (timeRange) {
-        case "1D":
-          points = 24;
-          timeFormat = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          break;
-        case "1W":
-          points = 7;
-          timeFormat = (date) => date.toLocaleDateString([], { weekday: 'short' });
-          break;
-        case "1M":
-          points = 30;
-          timeFormat = (date) => `${date.getDate()}/${date.getMonth() + 1}`;
-          break;
-        case "3M":
-          points = 12;
-          timeFormat = (date) => `${date.getDate()}/${date.getMonth() + 1}`;
-          break;
-        case "1Y":
-          points = 12;
-          timeFormat = (date) => {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            return months[date.getMonth()];
-          };
-          break;
-        case "ALL":
-          points = 10;
-          timeFormat = (date) => date.getFullYear().toString();
-          break;
-      }
-      
-      for (let i = points; i >= 0; i--) {
-        const date = new Date();
-        
-        switch (timeRange) {
-          case "1D":
-            date.setHours(now.getHours() - i);
-            break;
-          case "1W":
-            date.setDate(now.getDate() - i);
-            break;
-          case "1M":
-            date.setDate(now.getDate() - i);
-            break;
-          case "3M":
-            date.setDate(now.getDate() - (i * 7));
-            break;
-          case "1Y":
-            date.setMonth(now.getMonth() - i);
-            break;
-          case "ALL":
-            date.setFullYear(now.getFullYear() - i);
-            break;
-        }
-        
-        // Generate somewhat realistic price movements
-        const change = (Math.random() - 0.5) * volatility;
-        startPrice = Math.max(50, startPrice + change);
-        
-        result.push({
-          time: timeFormat(date),
-          price: parseFloat(startPrice.toFixed(2)),
-        });
-      }
-      
-      return result;
-    };
-    
     // Simulate API delay
     setTimeout(() => {
-      setData(generateData());
+      const chartData = getStockChartData(symbol, timeRange);
+      setData(chartData);
       setLoading(false);
     }, 700);
   }, [timeRange, symbol]);
+  
+  // Get current stock information
+  const stockInfo = getStock(symbol);
   
   // Calculate price change
   const priceChange = data.length > 1 
@@ -123,10 +48,22 @@ const StockChart = ({ symbol, timeframe = "1D" }: StockChartProps) => {
     : 0;
 
   const isPriceUp = priceChange >= 0;
-  const currentPrice = data.length ? data[data.length - 1].price : 0;
+  const currentPrice = stockInfo?.price || 0;
 
   // Timeframe options
   const timeframes: ("1D" | "1W" | "1M" | "3M" | "1Y" | "ALL")[] = ["1D", "1W", "1M", "3M", "1Y", "ALL"];
+
+  // Refresh chart data
+  const handleRefresh = () => {
+    setLoading(true);
+    
+    // Simulate API delay for refresh
+    setTimeout(() => {
+      const chartData = getStockChartData(symbol, timeRange);
+      setData(chartData);
+      setLoading(false);
+    }, 700);
+  };
 
   return (
     <div className="glass-card p-4 h-full">
@@ -142,7 +79,7 @@ const StockChart = ({ symbol, timeframe = "1D" }: StockChartProps) => {
               </div>
             ) : (
               <span className="text-silver text-sm">
-                Real-time
+                {stockInfo?.name || ""}
               </span>
             )}
           </div>
@@ -166,10 +103,7 @@ const StockChart = ({ symbol, timeframe = "1D" }: StockChartProps) => {
           </span>
           <button 
             className="ml-2 p-1 rounded-md hover:bg-space-light text-muted-foreground"
-            onClick={() => {
-              setLoading(true);
-              setTimeout(() => setLoading(false), 700);
-            }}
+            onClick={handleRefresh}
           >
             <RefreshCw size={14} />
           </button>
