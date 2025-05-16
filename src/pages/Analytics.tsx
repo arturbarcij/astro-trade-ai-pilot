@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Chart, ChartBar, ChartPie } from "lucide-react";
+import { BarChart2, ChartBarIcon, PieChart } from "lucide-react";
 
 const Analytics = () => {
   return (
@@ -19,15 +19,15 @@ const Analytics = () => {
         <Tabs defaultValue="performance">
           <TabsList className="mb-4">
             <TabsTrigger value="performance" className="flex items-center gap-2">
-              <Chart className="h-4 w-4" />
+              <BarChart2 className="h-4 w-4" />
               Performance
             </TabsTrigger>
             <TabsTrigger value="sectors" className="flex items-center gap-2">
-              <ChartPie className="h-4 w-4" />
+              <PieChart className="h-4 w-4" />
               Sector Analysis
             </TabsTrigger>
             <TabsTrigger value="trends" className="flex items-center gap-2">
-              <ChartBar className="h-4 w-4" />
+              <ChartBarIcon className="h-4 w-4" />
               Market Trends
             </TabsTrigger>
           </TabsList>
