@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ArrowUp, MessageSquare, Search, Share, ThumbsUp, Trending, Users } from "lucide-react";
+import { ArrowUp, MessageSquare, Search, Share, ThumbsUp, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -155,7 +155,7 @@ const CommunityPage = () => {
                 <div className="space-y-4">
                   <div className="p-3 border border-space-light rounded-md flex items-center gap-3">
                     <div className="bg-cosmic/20 p-2 rounded-full">
-                      <Trending size={16} className="text-cosmic" />
+                      <TrendingUp size={16} className="text-cosmic" />
                     </div>
                     <div>
                       <h4 className="font-medium">FOMC Meeting Impact</h4>
@@ -166,7 +166,7 @@ const CommunityPage = () => {
                   
                   <div className="p-3 border border-space-light rounded-md flex items-center gap-3">
                     <div className="bg-cosmic/20 p-2 rounded-full">
-                      <Trending size={16} className="text-cosmic" />
+                      <TrendingUp size={16} className="text-cosmic" />
                     </div>
                     <div>
                       <h4 className="font-medium">AI Sector Outlook</h4>
