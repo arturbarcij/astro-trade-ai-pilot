@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ArrowUp, MessageSquare, Search, Share, ThumbsUp, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,7 +87,7 @@ const CommunityPage = () => {
                 Feed
               </TabsTrigger>
               <TabsTrigger value="trending" className="data-[state=active]:bg-space-accent/20 data-[state=active]:text-cosmic">
-                <Trending className="h-4 w-4 mr-2" />
+                <TrendingUp className="h-4 w-4 mr-2" />
                 Trending
               </TabsTrigger>
               <TabsTrigger value="groups" className="data-[state=active]:bg-space-accent/20 data-[state=active]:text-cosmic">
