@@ -33,7 +33,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, className }) => {
     if (!isRecording) {
       setTimeout(() => {
         setIsRecording(false);
-        onSendMessage("What's my current portfolio performance?");
+        onSendMessage("Can you explain current inflation trends and their underlying causes?");
       }, 3000);
     }
   };
@@ -56,7 +56,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, className }) => {
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 bg-space p-2 rounded-md text-silver resize-none min-h-[40px] max-h-[120px] focus:outline-none focus:ring-1 focus:ring-space-accent"
-        placeholder="Ask your AI trading assistant..."
+        placeholder="Ask about macroeconomic insights, central bank policies, inflation, GDP trends..."
         rows={1}
       />
       <button
