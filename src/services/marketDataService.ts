@@ -366,9 +366,14 @@ export function getStockChartData(
     return [];
   }
   
-  // If we already have historical data cached, return it
-  if (stock.historical) {
-    return stock.historical;
+  // Initialize cache object if needed
+  if (!stock.historical) {
+    stock.historical = {};
+  }
+
+  // If data for this timeframe is cached, return it
+  if (stock.historical[timeframe]) {
+    return stock.historical[timeframe];
   }
   
   // Otherwise generate new historical data
@@ -382,9 +387,9 @@ export function getStockChartData(
     case "ALL": days = 1825; break; // 5 years
   }
   
-  // Generate and cache the data
+  // Generate and cache the data for this timeframe
   const data = generateHistoricalData(stock.price, days, stock.volatility || 0.7, timeframe);
-  stock.historical = data;
+  stock.historical[timeframe] = data;
   
   return data;
 }

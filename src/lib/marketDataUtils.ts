@@ -17,7 +17,8 @@ export interface StockData {
   volume: string;
   volatility?: number;  // Volatility factor (0-1)
   sector?: string;
-  historical?: MarketDataPoint[];
+  // Historical price data keyed by timeframe
+  historical?: Record<string, MarketDataPoint[]>;
 }
 
 export interface MarketIndex {
